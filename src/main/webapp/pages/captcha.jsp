@@ -14,9 +14,8 @@
 </head>
 <body>
 <form action="/doLogin" method="post">
-    <input type="text" /><img src="/jcaptcha" onclick="changeImage(this);" alt=""><br />
+    <input type="text" name="captcha" /><img src="/jcaptcha" onclick="changeImage(this);" alt=""><br />
     <input type="submit" value="提交验证">
-
 
 </form>
 

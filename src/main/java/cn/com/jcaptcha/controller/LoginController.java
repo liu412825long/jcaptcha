@@ -1,11 +1,7 @@
 package cn.com.jcaptcha.controller;
 
-import com.octo.captcha.service.image.ImageCaptchaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import cn.com.jcaptcha.util.CaptchaHelper;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,16 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class LoginController {
 
-    @Autowired
-    private ImageCaptchaService imageCaptchaService;
 
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean login(String captcha, HttpServletRequest request) {
+    public String login(HttpServletRequest request) {
 
-        Boolean isResponseCorrect = imageCaptchaService.validateResponseForID(request.getSession().getId(), captcha);
+        String captcha=request.getParameter("captcha");
 
-        return isResponseCorrect;
+        Boolean isResponseCorrect = CaptchaHelper.getInstance().validateResponseForID(request.getSession().getId(), captcha);
+        if(isResponseCorrect){
+            return "success";
+        }
+
+        return "fail";
     }
 
 }

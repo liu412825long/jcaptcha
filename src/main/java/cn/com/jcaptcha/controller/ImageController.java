@@ -1,5 +1,6 @@
 package cn.com.jcaptcha.controller;
 
+import cn.com.jcaptcha.util.CaptchaHelper;
 import com.octo.captcha.service.image.ImageCaptchaService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,13 @@ public class ImageController {
 
     private Logger logger = Logger.getLogger(ImageController.class);
 
-    @Autowired
-    private ImageCaptchaService imageCaptchaService;
 
     @RequestMapping(value = "/jcaptcha",method = RequestMethod.GET)
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) {
         try {
             ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
             String captchaId = request.getSession().getId();
-            BufferedImage challenge = imageCaptchaService.getImageChallengeForID(captchaId, request.getLocale());
+            BufferedImage challenge = CaptchaHelper.getInstance().getImageChallengeForID(captchaId, request.getLocale());
 
             response.setHeader("Cache-Control", "no-store");
             response.setHeader("Pragma", "no-cache");
